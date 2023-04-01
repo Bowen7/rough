@@ -1,5 +1,5 @@
 {
-  "name": "@bowen/roughjs",
+  "name": "@bowen7/roughjs",
   "version": "0.0.01-alpha.1",
   "description": "Create graphics using HTML Canvas or SVG with a hand-drawn, sketchy, appearance.",
   "main": "dist/rough.js",
