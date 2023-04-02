@@ -4,6 +4,7 @@ import { getFiller } from './fillers/filler.js';
 import { RenderHelper } from './fillers/filler-interface.js';
 import { Random } from './math.js';
 import { parsePath, normalize, absolutize } from 'path-data-parser';
+import { getStroke } from 'perfect-freehand';
 
 interface EllipseParams {
   rx: number;
@@ -380,14 +381,15 @@ function _fillLine(x1: number, y1: number, x2: number, y2: number, o: ResolvedOp
   const cy = y2 + (preserveVertices ? 0 : finalRandom());
 
   const halfFillWidth =
-    o.fillWeight < 0 ? o.strokeWidth / 4 : o.fillWeight / 2;
-  const deltaX = mx - cx;
-  const deltaY = my - cy;
+    o.fillWeight < 0 ? o.strokeWidth / 2.5 : o.fillWeight / 2;
+  const deltaX = cx - mx;
+  const deltaY = cy - my;
   const hypotenuse = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
   const offsetX =
     hypotenuse === 0 ? 0 : (halfFillWidth * deltaY) / hypotenuse;
   const offsetY =
     hypotenuse === 0 ? 0 : (halfFillWidth * deltaX) / hypotenuse;
+
   const ops: Op[] = [
     {
       op: 'move',

@@ -25,7 +25,7 @@ export class DotFiller implements PatternFiller {
     gap = Math.max(gap, 0.1);
     let fweight = o.fillWeight;
     if (fweight < 0) {
-      fweight = o.strokeWidth / 2;
+      fweight = o.strokeWidth * 2;
     }
     const ro = gap / 4;
     for (const line of lines) {
@@ -44,6 +44,6 @@ export class DotFiller implements PatternFiller {
         ops.push(...el.ops);
       }
     }
-    return { type: 'fillSketch', ops };
+    return { type: 'fillPath', ops };
   }
 }
