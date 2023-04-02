@@ -211,6 +211,9 @@ export class RoughGenerator {
         case 'lineTo':
           path += `L${data[0]} ${data[1]} `;
           break;
+        case 'close':
+          path += 'Z ';
+          break;
       }
     }
     return path.trim();

@@ -17,7 +17,7 @@ export class HachureFiller implements PatternFiller {
   protected _fillPolygons(polygonList: Point[][], o: ResolvedOptions): OpSet {
     const lines = polygonHachureLines(polygonList, o);
     const ops = this.renderLines(lines, o);
-    return { type: 'fillSketch', ops };
+    return { type: 'fillPath', ops };
   }
 
   protected renderLines(lines: Line[], o: ResolvedOptions): Op[] {

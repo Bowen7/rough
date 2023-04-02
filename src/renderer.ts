@@ -262,15 +262,18 @@ function _offsetOpt(x: number, ops: ResolvedOptions, roughnessGain = 1): number 
 
 function _doubleLine(x1: number, y1: number, x2: number, y2: number, o: ResolvedOptions, filling = false): Op[] {
   const singleStroke = filling ? o.disableMultiStrokeFill : o.disableMultiStroke;
-  const o1 = _line(x1, y1, x2, y2, o, true, false);
+  const o1 = _line(x1, y1, x2, y2, o, filling, false);
   if (singleStroke) {
     return o1;
   }
-  const o2 = _line(x1, y1, x2, y2, o, true, true);
+  const o2 = _line(x1, y1, x2, y2, o, filling, true);
   return o1.concat(o2);
 }
 
-function _line(x1: number, y1: number, x2: number, y2: number, o: ResolvedOptions, move: boolean, overlay: boolean): Op[] {
+function _line(x1: number, y1: number, x2: number, y2: number, o: ResolvedOptions, filling: boolean, overlay: boolean): Op[] {
+  if(filling) {
+    return _fillLine(x1, y1, x2, y2, o, overlay);
+  }
   const lengthSq = Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2);
   const length = Math.sqrt(lengthSq);
   let roughnessGain = 1;
@@ -296,22 +299,20 @@ function _line(x1: number, y1: number, x2: number, y2: number, o: ResolvedOption
   const randomHalf = () => _offsetOpt(halfOffset, o, roughnessGain);
   const randomFull = () => _offsetOpt(offset, o, roughnessGain);
   const preserveVertices = o.preserveVertices;
-  if (move) {
-    if (overlay) {
-      ops.push({
-        op: 'move', data: [
-          x1 + (preserveVertices ? 0 : randomHalf()),
-          y1 + (preserveVertices ? 0 : randomHalf()),
-        ],
-      });
-    } else {
-      ops.push({
-        op: 'move', data: [
-          x1 + (preserveVertices ? 0 : _offsetOpt(offset, o, roughnessGain)),
-          y1 + (preserveVertices ? 0 : _offsetOpt(offset, o, roughnessGain)),
-        ],
-      });
-    }
+  if (overlay) {
+    ops.push({
+      op: 'move', data: [
+        x1 + (preserveVertices ? 0 : randomHalf()),
+        y1 + (preserveVertices ? 0 : randomHalf()),
+      ],
+    });
+  } else {
+    ops.push({
+      op: 'move', data: [
+        x1 + (preserveVertices ? 0 : _offsetOpt(offset, o, roughnessGain)),
+        y1 + (preserveVertices ? 0 : _offsetOpt(offset, o, roughnessGain)),
+      ],
+    });
   }
   if (overlay) {
     ops.push({
@@ -338,6 +339,85 @@ function _line(x1: number, y1: number, x2: number, y2: number, o: ResolvedOption
       ],
     });
   }
+  return ops;
+}
+
+function _fillLine(x1: number, y1: number, x2: number, y2: number, o: ResolvedOptions, overlay: boolean): Op[] {
+  const lengthSq = Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2);
+  const length = Math.sqrt(lengthSq);
+  let roughnessGain = 1;
+  if (length < 200) {
+    roughnessGain = 1;
+  } else if (length > 500) {
+    roughnessGain = 0.4;
+  } else {
+    roughnessGain = (-0.0016668) * length + 1.233334;
+  }
+
+  let offset = o.maxRandomnessOffset || 0;
+  if ((offset * offset * 100) > lengthSq) {
+    offset = length / 10;
+  }
+  const halfOffset = offset / 2;
+  const divergePoint = 0.2 + random(o) * 0.2;
+  let midDispX = o.bowing * o.maxRandomnessOffset * (y2 - y1) / 200;
+  let midDispY = o.bowing * o.maxRandomnessOffset * (x1 - x2) / 200;
+  midDispX = _offsetOpt(midDispX, o, roughnessGain);
+  midDispY = _offsetOpt(midDispY, o, roughnessGain);
+  const randomHalf = () => _offsetOpt(halfOffset, o, roughnessGain);
+  const randomFull = () => _offsetOpt(offset, o, roughnessGain);
+  const preserveVertices = o.preserveVertices;
+  const finalRandom = overlay ? randomHalf : randomFull;
+
+  const mx =  x1 + (preserveVertices ? 0 : finalRandom());
+  const my = y1 + (preserveVertices ? 0 : finalRandom());
+
+  const cx1 = midDispX + x1 + (x2 - x1) * divergePoint + finalRandom();
+  const cy1 = midDispY + y1 + (y2 - y1) * divergePoint + finalRandom();
+  const cx2 = midDispX + x1 + 2 * (x2 - x1) * divergePoint + finalRandom();
+  const cy2 = midDispY + y1 + 2 * (y2 - y1) * divergePoint + finalRandom();
+  const cx = x2 + (preserveVertices ? 0 : finalRandom());
+  const cy = y2 + (preserveVertices ? 0 : finalRandom());
+
+  const halfFillWidth =
+    o.fillWeight < 0 ? o.strokeWidth / 4 : o.fillWeight / 2;
+  const deltaX = mx - cx;
+  const deltaY = my - cy;
+  const hypotenuse = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+  const offsetX =
+    hypotenuse === 0 ? 0 : (halfFillWidth * deltaY) / hypotenuse;
+  const offsetY =
+    hypotenuse === 0 ? 0 : (halfFillWidth * deltaX) / hypotenuse;
+  const ops: Op[] = [
+    {
+      op: 'move',
+      data: [mx + offsetX, my - offsetY],
+    },
+    {
+      op: 'bcurveTo',
+      data: [
+        cx1 + offsetX,
+        cy1 - offsetY,
+        cx2 + offsetX,
+        cy2 - offsetY,
+        cx + offsetX,
+        cy - offsetY,
+      ],
+    },
+    { op: 'lineTo', data: [cx - offsetX, cy + offsetY] },
+    {
+      op: 'bcurveTo',
+      data: [
+        cx2 - offsetX,
+        cy2 + offsetY,
+        cx1 - offsetX,
+        cy1 + offsetY,
+        mx - offsetX,
+        my + offsetY,
+      ],
+    },
+    { op: 'close', data: [] },
+  ];
   return ops;
 }
 

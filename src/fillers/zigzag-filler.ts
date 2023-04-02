@@ -27,7 +27,7 @@ export class ZigZagFiller extends HachureFiller {
         ]);
       }
     }
-    const ops = this.renderLines(zigzagLines, o);
-    return { type: 'fillSketch', ops };
+    const ops = this.renderLines(zigzagLines, o, zigZagAngle);
+    return { type: 'fillPath', ops };
   }
 }
