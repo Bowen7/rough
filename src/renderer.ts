@@ -4,7 +4,6 @@ import { getFiller } from './fillers/filler.js';
 import { RenderHelper } from './fillers/filler-interface.js';
 import { Random } from './math.js';
 import { parsePath, normalize, absolutize } from 'path-data-parser';
-import { getStroke } from 'perfect-freehand';
 
 interface EllipseParams {
   rx: number;
