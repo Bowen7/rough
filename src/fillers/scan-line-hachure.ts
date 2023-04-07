@@ -1,5 +1,5 @@
-import { Point, Line, rotatePoints, rotateLines } from '../geometry';
-import { ResolvedOptions } from '../core';
+import { Line, rotatePoints, rotateLines } from '../geometry';
+import { ResolvedOptions, Point } from '../core';
 
 interface EdgeEntry {
   ymin: number;

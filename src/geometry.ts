@@ -1,4 +1,4 @@
-export type Point = [number, number];
+import { Point } from './core';
 export type Line = [Point, Point];
 
 export interface Rectangle {

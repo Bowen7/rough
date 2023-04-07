@@ -1,7 +1,6 @@
-import { Point, pointsOnBezierCurves, simplify } from '../points-on-curve';
+import { pointsOnBezierCurves, simplify } from '../points-on-curve';
 import { parsePath, absolutize, normalize } from '../path-data-parser';
-
-export type { Point } from '../points-on-curve';
+import { Point } from '../core';
 
 export function pointsOnPath(path: string, tolerance?: number, distance?: number): Point[][] {
   const segments = parsePath(path);

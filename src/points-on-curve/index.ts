@@ -1,4 +1,4 @@
-export type Point = readonly [number, number];
+import { Point } from '../core';
 
 // distance between 2 points
 function distance(p1: Point, p2: Point): number {

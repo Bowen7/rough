@@ -1,4 +1,4 @@
-import { Point } from './index';
+import { Point } from '../core';
 
 function clone(p: Point): Point {
   return [...p] as Point;

@@ -1,8 +1,7 @@
-import { ResolvedOptions, Op, OpSet } from './core.js';
-import { Point } from './geometry.js';
-import { getFiller } from './fillers/filler.js';
-import { RenderHelper } from './fillers/filler-interface.js';
-import { Random } from './math.js';
+import { ResolvedOptions, Op, OpSet, Point } from './core';
+import { getFiller } from './fillers/filler';
+import { RenderHelper } from './fillers/filler-interface';
+import { Random } from './math';
 import { parsePath, normalize, absolutize } from './path-data-parser';
 
 interface EllipseParams {

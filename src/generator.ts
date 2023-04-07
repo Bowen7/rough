@@ -1,7 +1,6 @@
-import { Config, Options, Drawable, OpSet, ResolvedOptions, PathInfo } from './core.js';
-import { Point } from './geometry.js';
-import { line, solidFillPolygon, patternFillPolygons, rectangle, ellipseWithParams, generateEllipseParams, linearPath, arc, patternFillArc, curve, svgPath } from './renderer.js';
-import { randomSeed } from './math.js';
+import { Config, Options, Drawable, OpSet, ResolvedOptions, PathInfo, Point } from './core';
+import { line, solidFillPolygon, patternFillPolygons, rectangle, ellipseWithParams, generateEllipseParams, linearPath, arc, patternFillArc, curve, svgPath } from './renderer';
+import { randomSeed } from './math';
 import { curveToBezier } from './points-on-curve/curve-to-bezier';
 import { pointsOnBezierCurves } from './points-on-curve';
 import { pointsOnPath } from './points-on-path';

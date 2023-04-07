@@ -1,6 +1,6 @@
 import { PatternFiller, RenderHelper } from './filler-interface';
-import { ResolvedOptions, OpSet, Op } from '../core';
-import { Point, Line } from '../geometry';
+import { ResolvedOptions, OpSet, Op, Point } from '../core';
+import { Line } from '../geometry';
 import { polygonHachureLines } from './scan-line-hachure';
 
 export class HachureFiller implements PatternFiller {

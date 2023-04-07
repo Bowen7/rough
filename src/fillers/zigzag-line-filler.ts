@@ -1,6 +1,6 @@
 import { PatternFiller, RenderHelper } from './filler-interface';
-import { ResolvedOptions, OpSet, Op } from '../core';
-import { Point, Line, lineLength } from '../geometry';
+import { ResolvedOptions, OpSet, Op, Point } from '../core';
+import { Line, lineLength } from '../geometry';
 import { polygonHachureLines } from './scan-line-hachure';
 
 export class ZigZagLineFiller implements PatternFiller {
