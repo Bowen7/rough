@@ -3,7 +3,7 @@ import { Point } from './geometry.js';
 import { getFiller } from './fillers/filler.js';
 import { RenderHelper } from './fillers/filler-interface.js';
 import { Random } from './math.js';
-import { parsePath, normalize, absolutize } from 'path-data-parser';
+import { parsePath, normalize, absolutize } from './path-data-parser';
 
 interface EllipseParams {
   rx: number;

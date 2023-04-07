@@ -2,9 +2,9 @@ import { Config, Options, Drawable, OpSet, ResolvedOptions, PathInfo } from './c
 import { Point } from './geometry.js';
 import { line, solidFillPolygon, patternFillPolygons, rectangle, ellipseWithParams, generateEllipseParams, linearPath, arc, patternFillArc, curve, svgPath } from './renderer.js';
 import { randomSeed } from './math.js';
-import { curveToBezier } from 'points-on-curve/lib/curve-to-bezier.js';
-import { pointsOnBezierCurves } from 'points-on-curve';
-import { pointsOnPath } from 'points-on-path';
+import { curveToBezier } from './points-on-curve/curve-to-bezier';
+import { pointsOnBezierCurves } from './points-on-curve';
+import { pointsOnPath } from './points-on-path';
 
 const NOS = 'none';
 
