@@ -12,7 +12,7 @@ export class DashedFiller implements PatternFiller {
 
   fillPolygons(polygonList: Point[][], o: ResolvedOptions): OpSet {
     const lines = polygonHachureLines(polygonList, o);
-    return { type: 'fillSketch', ops: this.dashedLine(lines, o) };
+    return { type: 'fillPath', ops: this.dashedLine(lines, o) };
   }
 
   private dashedLine(lines: Line[], o: ResolvedOptions): Op[] {
