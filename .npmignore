@@ -7,3 +7,7 @@ tslint.json
 rollup.config.js
 .gitignore
 visual-tests
+.vscode
+.github
+playground
+.eslintrc.json

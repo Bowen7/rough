@@ -30,6 +30,7 @@ export class RoughGenerator {
     disableMultiStroke: false,
     disableMultiStrokeFill: false,
     preserveVertices: false,
+    fixedDecimalPlaceDigits: 3,
   };
 
   constructor(config?: Config) {
@@ -227,7 +228,7 @@ export class RoughGenerator {
       switch (drawing.type) {
         case 'path':
           path = {
-            d: this.opsToPath(drawing),
+            d: this.opsToPath(drawing, o.fixedDecimalPlaceDigits),
             stroke: o.stroke,
             strokeWidth: o.strokeWidth,
             fill: NOS,
@@ -235,7 +236,7 @@ export class RoughGenerator {
           break;
         case 'fillPath':
           path = {
-            d: this.opsToPath(drawing),
+            d: this.opsToPath(drawing, o.fixedDecimalPlaceDigits),
             stroke: NOS,
             strokeWidth: 0,
             fill: o.fill || NOS,
@@ -258,7 +259,7 @@ export class RoughGenerator {
       fweight = o.strokeWidth / 2;
     }
     return {
-      d: this.opsToPath(drawing),
+      d: this.opsToPath(drawing, o.fixedDecimalPlaceDigits),
       stroke: o.fill || NOS,
       strokeWidth: fweight,
       fill: NOS,
